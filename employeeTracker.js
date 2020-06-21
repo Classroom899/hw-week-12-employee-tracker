@@ -7,9 +7,14 @@ var connection = mysql.createConnection({
   port: 3306,
 
   // Your username
-  user: "access",
+  user: "root",
 
   // Your password
   password: "",
   database: "company_db",
+});
+
+connection.connect(function (err) {
+  if (err) throw err;
+  runTable();
 });
