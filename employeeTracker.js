@@ -107,18 +107,22 @@ function departmentSearch() {
 function addNewDepartment() {
   inquirer
     .prompt({
-      name: "department",
+      name: "name",
       type: "input",
       message: "Which new department would you like to add?",
     })
     .then(function (name) {
-      var query = "INSERT INTO department (name)";
-      query += "VALUES (" + name.department + ")";
-      console.log(query);
-      connection.query(query, { department: name.department }, function (
+      console.log(name);
+      // var query = "INSERT INTO department SET ?",
+      //   name;
+      // query += "VALUES (" + name.department + ")";'
+      // console.log(query);
+      connection.query("INSERT INTO department SET ?", name, function (
         err,
         res
       ) {
+        if (err) throw err;
+        console.log(res);
         // res is an array of objects
         // for (var i = 0; i < res.length; i++) {
         //   console.log("Department: " + res[i] + " || Response: ");
