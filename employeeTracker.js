@@ -53,9 +53,12 @@ function runTable() {
           connection.end();
           break;
 
-        // case "Find all artists who appear more than once":
-        //   multiSearch();
-        //   break;
+        case "Add role":
+          addNewRole();
+          break;
+        case "exit":
+          connection.end();
+          break;
 
         // case "Find data within a specific range":
         //   rangeSearch();
@@ -113,6 +116,25 @@ function addNewDepartment() {
     })
     .then(function (name) {
       console.log(name);
+      connection.query("INSERT INTO department SET ?", name, function (
+        err,
+        res
+      ) {
+        if (err) throw err;
+        console.log(res);
+      });
+    });
+}
+
+function addNewRole() {
+  inquirer
+    .prompt({
+      name: "name",
+      type: "input",
+      message: "Which new role would you like to add?",
+    })
+    .then(function (role) {
+      console.log(role);
       // var query = "INSERT INTO department SET ?",
       //   name;
       // query += "VALUES (" + name.department + ")";'
