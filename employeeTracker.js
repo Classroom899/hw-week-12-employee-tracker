@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-// require("console.table");
+require("console.table");
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -53,6 +53,9 @@ function runTable() {
           connection.end();
           break;
 
+        case "View role":
+          roleSearch();
+          break;
         case "Add role":
           addNewRole();
           break;
@@ -83,24 +86,15 @@ function departmentSearch() {
       message: "What department would you like to search for?",
     })
     .then(function (answer) {
-      var query = "SELECT department, FROM department WHERE ?";
+      var query = "SELECT * FROM department WHERE ?";
       console.log(answer);
-      connection.query(query, { department: answer.department }, function (
-        err,
-        res
-      ) {
-        if (err) throw err;
+      connection.query(query, { name: answer.department }, function (err, res) {
+        if (err) console.log(err);
         // res is an array of objects
-        // for (var i = 0; i < res.length; i++) {
-        //   console.log(
-        //     "Department: " +
-        //       res[i].position +
-        //       " || Song: " +
-        //       res[i].song +
-        //       " || Year: " +
-        //       res[i].year
-        //   );
-        // }
+        console.log(res);
+        for (var i = 0; i < res.length; i++) {
+          console.table(res[i]);
+        }
       });
       console.log(answer);
       runTable();
@@ -126,6 +120,29 @@ function addNewDepartment() {
     });
 }
 
+function roleSearch() {
+  inquirer
+    .prompt({
+      name: "role",
+      type: "input",
+      message: "What role would you like to search for?",
+    })
+    .then(function (answer) {
+      var query = "SELECT * FROM role WHERE ?";
+      console.log(answer);
+      connection.query(query, { title: answer.role }, function (err, res) {
+        if (err) console.log(err);
+        // res is an array of objects
+        console.log(res);
+        for (var i = 0; i < res.length; i++) {
+          console.table(res[i]);
+        }
+      });
+      console.log(answer);
+      runTable();
+    });
+}
+
 function addNewRole() {
   inquirer
     .prompt({
@@ -134,22 +151,14 @@ function addNewRole() {
       message: "Which new role would you like to add?",
     })
     .then(function (role) {
-      console.log(role);
-      // var query = "INSERT INTO department SET ?",
-      //   name;
-      // query += "VALUES (" + name.department + ")";'
-      // console.log(query);
-      connection.query("INSERT INTO department SET ?", name, function (
-        err,
-        res
-      ) {
-        if (err) throw err;
-        console.log(res);
-        // res is an array of objects
-        // for (var i = 0; i < res.length; i++) {
-        //   console.log("Department: " + res[i] + " || Response: ");
-        // }
-        // runSearch();
-      });
+      console.table(role);
+      connection.query(
+        "INSERT INTO role SET ?",
+        { title: role.name },
+        function (err, res) {
+          if (err) console.log(err);
+          console.table(res);
+        }
+      );
     });
 }
