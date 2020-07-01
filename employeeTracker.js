@@ -33,7 +33,7 @@ function runTable() {
         "Add employee",
         "View department",
         "View role",
-        "Vew employee",
+        "View employee",
         "exit",
       ],
     })
@@ -63,17 +63,15 @@ function runTable() {
           connection.end();
           break;
 
-        // case "Find data within a specific range":
-        //   rangeSearch();
-        //   break;
-
-        // case "Search for a specific song":
-        //   songSearch();
-        //   break;
-
-        // case "Find artists with a top song and top album in the same year":
-        //   songAndAlbumSearch();
-        //   break;
+        case "View employee":
+          employeeSearch();
+          break;
+        case "Add employee":
+          addNewEmployee();
+          break;
+        case "exit":
+          connection.end();
+          break;
       }
     });
 }
@@ -115,7 +113,7 @@ function addNewDepartment() {
         res
       ) {
         if (err) throw err;
-        console.log(res);
+        console.log("New Department", res);
       });
     });
 }
@@ -160,5 +158,31 @@ function addNewRole() {
           console.table(res);
         }
       );
+    });
+}
+
+function employeeSearch() {
+  inquirer
+    .prompt({
+      name: "employee",
+      type: "input",
+      message: "Which employee name would you like to search for?",
+    })
+    .then(function (answer) {
+      var query = "SELECT * FROM employee WHERE ?";
+      console.log(answer);
+      connection.query(query, { firstName: answer.employee }, function (
+        err,
+        res
+      ) {
+        if (err) console.log(err);
+        // res is an array of objects
+        console.log(res);
+        for (var i = 0; i < res.length; i++) {
+          console.table(res[i]);
+        }
+      });
+      console.log(answer);
+      runTable();
     });
 }
