@@ -186,3 +186,23 @@ function employeeSearch() {
       runTable();
     });
 }
+
+function addNewEmployee() {
+  inquirer
+    .prompt({
+      name: "name",
+      type: "input",
+      message: "Which new employee would you like to add?",
+    })
+    .then(function (employee) {
+      console.table(employee);
+      connection.query(
+        "INSERT INTO employee SET ?",
+        { firstName: employee.name },
+        function (err, res) {
+          if (err) console.log(err);
+          console.table(res);
+        }
+      );
+    });
+}
