@@ -132,7 +132,8 @@ function roleSearch() {
       message: "What role would you like to search for?",
     })
     .then(function (answer) {
-      var query = "SELECT * FROM role WHERE ?";
+      // var query = "SELECT * FROM role WHERE ?";
+      var query = 'SELECT * FROM `role` WHERE `name`=?'
       console.log(answer);
       connection.query(query, { title: answer.role }, function (err, res) {
         if (err) console.log(err);
@@ -175,7 +176,8 @@ function employeeSearch() {
       message: "Which employee name would you like to search for?",
     })
     .then(function (answer) {
-      var query = "SELECT * FROM employee WHERE ?";
+      // var query = "SELECT * FROM employee WHERE ?";
+      var query = 'SELECT * FROM `employee` WHERE `name`=?'
       console.log(answer);
       connection.query(query, { firstName: answer.employee }, function (
         err,
