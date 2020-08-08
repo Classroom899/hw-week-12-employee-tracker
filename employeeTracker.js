@@ -79,15 +79,15 @@ function runTable() {
 
 function departmentSearch() {
   inquirer
-    .prompt({
+    .prompt([{
       name: "department",
       type: "input",
       message: "What department would you like to search for?",
-    })
+    }])
     .then(function (answer) {
-      var query = "SELECT * FROM department WHERE ?";
+      var query = 'SELECT * FROM `department` WHERE `name`=?'
       console.log(answer);
-      connection.query(query, { name: answer.department }, function (err, res) {
+      connection.query(query, [answer.department], function (err, res) {
         if (err) console.log(err);
         // res is an array of objects
         console.log(res);
@@ -99,6 +99,11 @@ function departmentSearch() {
       runTable();
     });
 }
+
+// Insert - INSERT INTO tablename(column names) VALUES()
+// Select - SELECT someColumnName FROM tableName WHERE whereClause
+// Delete - DELETE FROM tableName WHERE whereClause (have all values correct)
+// Update - UPDATE tableName SET VALUES whereClause
 
 function addNewDepartment() {
   inquirer
